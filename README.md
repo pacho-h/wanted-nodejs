@@ -41,3 +41,8 @@ API 서비스, Database 컨테이너 실행
 ```bash
 $ docker compose up --build -d
 ```
+
+## DB 스키마 생성
+```bash
+$ npm run migration:run
+```
