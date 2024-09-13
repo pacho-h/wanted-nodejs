@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmConfigService } from './config/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,6 +19,11 @@ import { CommentsModule } from './comments/comments.module';
     CommentsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
