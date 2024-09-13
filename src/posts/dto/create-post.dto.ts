@@ -1,5 +1,5 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { IsMatchedTo } from '../../validators/match.decorator';
+import { IsMatchedTo } from '../../libs/match.decorator';
 
 export class CreatePostDto {
   @IsString()

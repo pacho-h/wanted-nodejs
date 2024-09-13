@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -13,22 +12,28 @@ export class CommentsController {
   }
 
   @Get()
-  findAll() {
-    return this.commentsService.findAll();
-  }
+  async getList(
+    @Query('postId') postId: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    const comments = await this.commentsService.findByPostId(
+      +postId,
+      page ? +page : 1,
+      limit ? +limit : 10,
+    );
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id);
+    return Promise.all(
+      comments.map((comment) => {
+        return this.commentsService.findReplies(comment.id);
+      }),
+    ).then((results) => {
+      return comments.map((comment, index) => {
+        return {
+          ...comment,
+          replies: results[index],
+        };
+      });
+    });
   }
 }
