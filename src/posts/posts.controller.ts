@@ -14,14 +14,20 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { DeletePostDto } from './dto/delete-post.dto';
+import { KeywordNotificationsService } from '../keyword-notifications/keyword-notifications.service';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+  constructor(
+    private readonly postsService: PostsService,
+    private readonly keywordNotificationsService: KeywordNotificationsService,
+  ) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  async create(@Body() createPostDto: CreatePostDto) {
+    const post = await this.postsService.create(createPostDto);
+    await this.keywordNotificationsService.checkForKeywords(post.content);
+    return post;
   }
 
   @Get()

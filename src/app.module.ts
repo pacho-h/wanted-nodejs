@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { APP_PIPE } from '@nestjs/core';
+import { KeywordNotificationsModule } from './keyword-notifications/keyword-notifications.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { APP_PIPE } from '@nestjs/core';
     }),
     PostsModule,
     CommentsModule,
+    KeywordNotificationsModule,
   ],
   controllers: [],
   providers: [
