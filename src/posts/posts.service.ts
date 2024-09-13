@@ -20,10 +20,18 @@ export class PostsService {
     return this.postsRepository.save(newPost);
   }
 
-  findAll(page: number, limit: number) {
+  findAll(searchText: string, page: number, limit: number) {
     return this.postsRepository.find({
       skip: (page - 1) * limit,
       take: limit,
+      where: [
+        {
+          title: searchText,
+        },
+        {
+          author: searchText,
+        },
+      ],
       order: { createdAt: 'DESC' },
     });
   }

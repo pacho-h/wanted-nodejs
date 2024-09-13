@@ -67,11 +67,12 @@ describe('PostsService', () => {
 
   describe('findAll', () => {
     it('should return an array of posts', async () => {
-      const result = await service.findAll(1, 10);
+      const result = await service.findAll('', 1, 10);
       expect(result).toEqual([mockPost]);
       expect(repository.find).toHaveBeenCalledWith({
         skip: 0,
         take: 10,
+        where: [{ title: '' }, { author: '' }],
         order: { createdAt: 'DESC' },
       });
     });

@@ -25,8 +25,16 @@ export class PostsController {
   }
 
   @Get()
-  getList(@Query('page') page?: string, @Query('limit') limit?: string) {
-    return this.postsService.findAll(page ? +page : 1, limit ? +limit : 10);
+  getList(
+    @Query('searchText') searchText: string,
+    @Query('page') page?: string,
+    @Query('limit') limit?: string,
+  ) {
+    return this.postsService.findAll(
+      searchText,
+      page ? +page : 1,
+      limit ? +limit : 10,
+    );
   }
 
   @Get(':id')

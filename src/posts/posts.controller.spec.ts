@@ -64,9 +64,9 @@ describe('PostsController', () => {
 
   describe('getList', () => {
     it('should return a list of posts', async () => {
-      const result = await controller.getList('1', '10');
+      const result = await controller.getList('', '1', '10');
       expect(result).toEqual([mockPost]);
-      expect(service.findAll).toHaveBeenCalledWith(1, 10);
+      expect(service.findAll).toHaveBeenCalledWith('', 1, 10);
     });
   });
 
